@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <h1>Welcome to FANATIC Website, <%= @auth.user.name %> !</h1>
+  <p>
+    You have successfully order to our website,
+    your username is: <%= @auth.uid %>.<br>
+  </p>
+  <p>
+    This is details of your order!!!
+    <table class="table-orders table-orders">
+      <tr>
+        <th class="product"><%= @list_orderItem.length %> PRODUCTS</th>
+        <th class="price">PRICE</th>
+        <th class="quantity">QUANTITY</th>
+        <th class="number">TOTAL</th>
+      </tr>
+      <% @list_orderItem.each do |item| %>
+      <tr class="item">
+        <td class="item-order">
+          <div class="img">
+            <%= cl_image_tag(item.product.property.images[0].image, :alt => "Sample Image", :class => "image-order") %>
+          </div>
+          <p class="title">
+            <%= item.product.name%>
+          </p>
+        </td>
+        <td class="center">
+          <h5>$<%=item.product.property.price%></h5>
+        </td>
+        <td class="center">
+          <%= item.quantity%>
+        </td>
+        <td class="center">
+          $<%= item.total%>
+        </td>
+      </tr>
+      <% end %>
+      <tr>
+        <td colspan=4 class="total">
+          <span class="total-label">TOTAL:</span> <span class="total-price">$<%=@total %></span>
+        </td>
+      </tr>
+    </table>
+  </p>
+</body>
+</html>
