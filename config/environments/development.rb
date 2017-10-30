@@ -68,4 +68,13 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.rails_logger = true
   end
+
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+    ::GATEWAY = ActiveMerchant::Billing::PaypalGateway.new(
+      :login => "dhquan1910-facilitator_api1.gmail.com",
+      :password => "MPS5UA2MKCYSTD6J",
+      :signature => "A8aFIRFGgRdFOZG2ey2PTpnZagaAAHahQNK770BqqK8mymuodgmxx2S."
+    )
+  end
 end

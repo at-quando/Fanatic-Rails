@@ -5,6 +5,9 @@ class CreateOrders < ActiveRecord::Migration[5.1]
       t.string :receiver
       t.string :address
       t.string :phone
+      t.float :total
+      t.integer :status
+      t.datetime :purchased_at
 
       t.belongs_to :user
       t.timestamps

@@ -14,21 +14,22 @@ class OrdersController < ApplicationController
   end
 
   private
-    def create_order(params)
-      current_user.orders.create(
-        receiver: params[:receiver],
-        address: params[:address],
-        phone: params[:phone]
-      )
-    end
+  def create_order(params)
+    current_user.orders.create(
+      receiver: params[:receiver],
+      address: params[:address],
+      phone: params[:phone],
+      total: params[:total]
+    )
+  end
 
-    def create_order_items(order, orders)
-      order.each do |ord|
-      orders.order_items.create(
-        quantity: ord['quantity'],
-        total: ord['quantity'] * Property.find(ord['property']).price,
-        property_id: ord['property']
-      )
+  def create_order_items(order, orders)
+    order.each do |ord|
+    orders.order_items.create(
+      quantity: ord['quantity'],
+      total: ord['quantity'] * Property.find(ord['property']).price,
+      property_id: ord['property']
+    )
     end
-    end
+  end
 end
