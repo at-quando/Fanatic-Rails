@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :products, only: %i[index show]
     # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
     resources :suggest_search, only: [:index]
+    resources :coupons, only: [:index]
     resources :users, only: %i[show update create]
     resources :shops, only: %i[show index]
     resources :search, only: [:index]
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
     resources :clothes_care_products, only: [:index]
     resources :electronic_care_products, only: [:index]
     resources :best_seller_products, only: [:index]
+    resources :card_payments, only: [:create]
     require 'sidekiq/web'
     # ...
     mount Sidekiq::Web, at: '/sidekiq'

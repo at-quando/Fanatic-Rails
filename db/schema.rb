@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170912064502) do
+ActiveRecord::Schema.define(version: 20171030042510) do
 
   create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -52,6 +52,31 @@ ActiveRecord::Schema.define(version: 20170912064502) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "card_payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "ip_address"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "card_type"
+    t.date "card_expires_on"
+    t.bigint "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_card_payments_on_order_id"
+  end
+
+  create_table "card_transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "action"
+    t.float "amount", limit: 24
+    t.boolean "success"
+    t.string "authorization"
+    t.string "message"
+    t.text "params"
+    t.bigint "card_payment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_payment_id"], name: "index_card_transactions_on_card_payment_id"
+  end
+
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
     t.integer "parent_id"
@@ -86,6 +111,34 @@ ActiveRecord::Schema.define(version: 20170912064502) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "coupons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "code"
+    t.float "sale", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "discounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "property_id"
+    t.bigint "event_id"
+    t.float "sale", limit: 24
+    t.float "quantity", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_discounts_on_event_id"
+    t.index ["property_id"], name: "index_discounts_on_property_id"
+  end
+
+  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "shop_id"
+    t.datetime "start_day"
+    t.datetime "end_day"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_events_on_shop_id"
+  end
+
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "image"
     t.bigint "property_id"
@@ -107,10 +160,12 @@ ActiveRecord::Schema.define(version: 20170912064502) do
   end
 
   create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "status", default: 0
+    t.integer "status"
     t.string "receiver"
     t.string "address"
     t.string "phone"
+    t.float "total", limit: 24
+    t.datetime "purchased_at"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

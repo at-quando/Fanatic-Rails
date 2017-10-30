@@ -1,5 +1,6 @@
 class SessionController < ApplicationController
   def create
+    password, uid = request_headers
     auth = Authentication.find_by(uid: params[:uid])
     if auth && auth.authenticate(params[:password]) && auth.confirm_at
       auth.sign_in
